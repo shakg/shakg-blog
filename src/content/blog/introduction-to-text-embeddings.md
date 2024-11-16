@@ -1,20 +1,18 @@
 ---
-title: Introduction to Text Embeddings As A Web Developer
+title: Introduction to Text Embeddings
 author: shakg
-pubDatetime: 2024-11-16T06:56:51Z
-slug: introduction-to-text-embeddings-as-a-web-developer
+pubDatetime: 2024-11-16T06:16:51Z
+slug: introduction-to-text-embeddings
 featured: false
 draft: false
 tags:
   - AI
   - LLM
   - Embeddings
-  - MLOPs
   - Software Development
 description:
-  "In the modern era of AI and machine learning, text embeddings and similarity search are game-changers. Whether you're building a recommendation system, powering search engines, or creating AI-driven chatbots, understanding these concepts can give your applications an edge. This post introduces text embeddings, how they work, and their role in similarity search—all tailored for web developers."
+  "In the modern era of AI and machine learning, text embeddings and similarity search are game-changers. Whether you're building a recommendation system, powering search engines, or creating AI-driven chatbots, understanding these concepts can give your applications an edge."
 ---
-
 # Introduction to Text Embeddings and Similarity Search for Web Developers
 
 In the modern era of AI and machine learning, text embeddings and similarity search are game-changers. Whether you're building a recommendation system, powering search engines, or creating AI-driven chatbots, understanding these concepts can give your applications an edge. This post introduces text embeddings, how they work, and their role in similarity search—all tailored for web developers.
