@@ -12,13 +12,13 @@ tags:
 description: "How to set goals, track goals and refine them to get better at life"
 ---
 # Goal Setting and Tracking Framework
-There is a framework that I've using for some time. I think this framework of writing and following up with goals has some potential in terms of clearity & simplicity. There is already dozens of framework or boilerplates for goal setting and managing habits etc. but none of them sticked to me because even though they are good, I didn't get the fealing of setting the stage and moving forward from there. 
+I’ve been using a framework for goal setting and tracking for some time now. I believe this framework, which involves writing down and following up on goals, has great potential in terms of clarity and simplicity. There are already dozens of frameworks and boilerplates for goal setting and habit management, but none of them stuck with me. Even though they were good, I never felt like I was setting a clear stage and moving forward from there.
 
-So I've created a simple yet effective headlines to give you current situation, couple of options as well as the action plan. Combining this framework with "retrospectives", will work, at least thats what I am assuming.
+So, I’ve created a simple yet effective set of guidelines to help you define your current situation, explore options, and create an action plan. Combining this framework with "retrospectives" should work—at least that’s my assumption.
 
-> Retrospective is basically, taking a look at the last day, week or month to see what has worked well and what doesn't. Taking notes on them and trying to avoid them in the next cycle.
+> A retrospective is essentially looking back at the previous day, week, or month to evaluate what worked well and what didn’t. Take notes on them and try to avoid repeating mistakes in the next cycle.
 
-Here is the boilerplate that you can easily create on markdown, word or even on notepad. 
+Here’s a boilerplate you can easily create in Markdown, Word, or even Notepad.
 
 ```markdown
 ## Objective
@@ -92,14 +92,14 @@ After completing the goal or reaching a significant milestone, take time to refl
 - **What could be improved?**
 - **What did you learn?**
 ```
-You can obviously change it according to your needs. Everybody is different and generally, there is no one fits all solution.
 
-When you define the current state, objective and the different types of solutions to achieve the objective, there is one thing to do, creating an action plan and executing it.
-After you've started to make things go, I advise to reflect on that using "retrospectives", its just sitting in front of a paper and writing how was the experience, what was good and what was bad? How can you make it better? For example, you've tried to read a book in the morning but it was challenging because you are not a morning person and you are staying up late almost everynight. In the retrospectives you should note that and change the action plan according to feedback that you've written. 
+You can obviously modify this template to suit your needs. Everyone is different, and generally, there is no one-size-fits-all solution.
 
-> According to me, this types of documents should be *live-documents*. Actually, except for some rare kind of documents, every document should be live and should be refined regularly. Our life is changing rapidly so should our processes and documents. 
+Once you've defined the current state, objective, and possible solutions, the next step is to create an action plan and execute it. After you begin implementing, I recommend using "retrospectives" to reflect on the process. Simply sit down with a piece of paper and write about your experience—what went well, what didn’t, and how you can improve next time. For example, if you tried reading in the morning but found it difficult because you're not a morning person and stay up late most nights, note that in your retrospective and adjust the action plan accordingly.
 
-Anyways, couple of examples for making it clear in terms of what to write inside the blocks. 
+> In my opinion, these types of documents should be live-documents. Actually, with a few exceptions, every document should be live and regularly refined. Our lives change rapidly, so should our processes and documents.
+
+Here are a couple of examples to make things clearer regarding what to write in each section:# Goal Setting and Tracking Framework
 
 ---
 
