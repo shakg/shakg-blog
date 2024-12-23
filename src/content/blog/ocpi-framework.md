@@ -1,7 +1,7 @@
 ---
 title: OCPI Framework For Clear Writing
 author: shakg
-pubDatetime: 2024-12-23T09:24:51Z
+pubDatetime: 2024-12-23T06:24:51Z
 slug: ocpi-framework-for-clear-writing
 featured: true
 draft: false
