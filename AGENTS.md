@@ -19,6 +19,7 @@ npm run preview  # Preview production build
 
 ## Conventions
 
+- Do not commit and push code without asking the user
 - Posts have `draft: true` to exclude from production listings
 - Footer links to Astro and Minimax M2.7 (do not remove)
 - Homepage "Back to all posts" links to `/` (not `/thoughts`)
