@@ -1,0 +1,118 @@
+---
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { Mail } from '@lucide/astro';
+
+const pageTitle = 'About';
+---
+
+<BaseLayout title={pageTitle} description="Learn more about Ishak's thoughts and writings">
+  <Header />
+  <main class="container">
+    <div class="about">
+      <h1>{pageTitle}</h1>
+      <p>
+        I'm Ishak Gönül, a software developer working on Ground Control Systems, UAV tooling, and real-time telemetry/navigation software.
+      </p>
+      <p>
+        I started in full-stack development, but over time I found myself pulled more toward systems work — the kind where performance, reliability, and clarity actually matter. These days I'm mostly interested in architecture, real-time data flow, geospatial systems, and building software that has to hold up under real conditions, not just look good in a demo.
+      </p>
+      <p>
+        A lot of the problems I enjoy sit around GPS tracking, telemetry, mapping, navigation, and operator-facing software. I like working on things like secure and low-latency data pipelines, trajectory and interpolation problems, geofencing, polygon logic, terrain-aware systems, and interfaces that need to make complex information readable.
+      </p>
+      <p>
+        This blog is where I write about the things I'm building, the things I'm learning, and the things I'm trying to understand better. Some posts will be technical, some will be more reflective, but all of them come from real work, real trade-offs, and real curiosity.
+      </p>
+      <p>
+        I'm not very interested in writing for the sake of sounding smart. I'd rather write about what actually works, what breaks, and what's worth paying attention to.
+      </p>
+
+      <div class="social-links">
+        <h2>You can find me here</h2>
+        <div class="social-icons">
+          <a href="https://github.com/shakg" target="_blank" rel="noopener" aria-label="GitHub" class="icon-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a href="https://linkedin.com/in/shakg" target="_blank" rel="noopener" aria-label="LinkedIn" class="icon-link">
+            <svg height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 382 382" xml:space="preserve"><path style="fill:#1c1917;" d="M347.445,0H34.555C15.471,0,0,15.471,0,34.555v312.889C0,366.529,15.471,382,34.555,382h312.889C366.529,382,382,366.529,382,347.444V34.555C382,15.471,366.529,0,347.445,0z M118.207,329.844c0,5.554-4.502,10.056-10.056,10.056H65.345c-5.554,0-10.056-4.502-10.056-10.056V150.403c0-5.554,4.502-10.056,10.056-10.056h42.806c5.554,0,10.056,4.502,10.056,10.056V329.844z M86.748,123.432c-22.459,0-40.666-18.207-40.666-40.666S64.289,42.1,86.748,42.1s40.666,18.207,40.666,40.666S109.208,123.432,86.748,123.432z M341.91,330.654c0,5.106-4.14,9.246-9.246,9.246H286.73c-5.106,0-9.246-4.14-9.246-9.246v-84.168c0-12.556,3.683-55.021-32.813-55.021c-28.309,0-34.051,29.066-35.204,42.11v97.079c0,5.106-4.139,9.246-9.246,9.246h-44.426c-5.106,0-9.246-4.14-9.246-9.246V149.593c0-5.106,4.14-9.246,9.246-9.246h44.426c5.106,0,9.246,4.14,9.246,9.246v15.655c10.497-15.753,26.097-27.912,59.312-27.912c73.552,0,73.131,68.716,73.131,106.472L341.91,330.654L341.91,330.654z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+          <a href="mailto:ishakgonulgb@gmail.com" aria-label="Email" class="icon-link">
+            <Mail size={24} />
+            <span>Mail</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .about {
+    padding: 4rem 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .about h1 {
+    margin-top: 0;
+  }
+
+  .about h2 {
+    font-size: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .about p {
+    color: var(--color-secondary);
+    line-height: 1.8;
+  }
+
+  .about a {
+    color: var(--color-accent);
+  }
+
+  .social-links {
+    margin-top: 3rem;
+  }
+
+  .social-links h2 {
+    font-size: 1.5rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .social-icons a {
+    color: #1c1917;
+    transition: opacity 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .social-icons a:hover {
+    opacity: 0.6;
+    text-decoration: none;
+  }
+
+  .social-icons svg,
+  .social-icons :global(svg) {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .social-icons svg[viewBox="0 0 382 382"] {
+    width: 24px;
+    height: 24px;
+  }
+</style>

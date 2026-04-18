@@ -1,0 +1,28 @@
+---
+
+import PostLayout from '../../layouts/PostLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('thoughts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+function calculateReadingTime(content: string): string {
+  const wordsPerMinute = 200;
+  const words = content.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return `${minutes} min read`;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const readingTime = calculateReadingTime(post.body);
+---
+
+<PostLayout post={post} readingTime={readingTime}>
+  <Content />
+</PostLayout>

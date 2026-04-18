@@ -1,0 +1,60 @@
+---
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+function calculateReadingTime(content: string): string {
+  const wordsPerMinute = 200;
+  const words = content.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return `${minutes} min read`;
+}
+
+const allPosts = await getCollection('thoughts', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Ishak's Thoughts" description="A minimalist blog built with Astro">
+  <Header />
+  <main class="container">
+    <section class="posts">
+      {sortedPosts.length === 0 ? (
+        <p class="empty-state">No posts yet. Check back soon!</p>
+      ) : (
+        sortedPosts.map((post) => (
+          <PostCard post={post} readingTime={calculateReadingTime(post.body)} />
+        ))
+      )}
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .posts {
+    animation: fadeIn 600ms ease-out 200ms backwards;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--color-secondary);
+    padding: 3rem 0;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+  }
+</style>

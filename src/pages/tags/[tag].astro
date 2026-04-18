@@ -1,0 +1,94 @@
+---
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/PostCard.astro';
+import TagPill from '../../components/TagPill.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+const allPosts = await getCollection('thoughts', ({ data }) => !data.draft);
+  const tagSet = new Set<string>();
+
+  allPosts.forEach((post) => {
+    post.data.tags?.forEach((tag) => tagSet.add(tag));
+  });
+
+  return Array.from(tagSet).map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: allPosts
+        .filter((post) => post.data.tags?.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+function calculateReadingTime(content: string): string {
+  const wordsPerMinute = 200;
+  const words = content.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return `${minutes} min read`;
+}
+
+const { tag, posts } = Astro.props;
+
+const allPosts = await getCollection('thoughts', ({ data }) => !data.draft);
+const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags || []))].sort();
+---
+
+<BaseLayout title={`Posts tagged: ${tag}`} description={`All posts tagged with ${tag}`}>
+  <Header />
+  <main class="container">
+    <div class="tag-header">
+      <h1>Tag: {tag}</h1>
+      <div class="all-tags">
+        {allTags.map((t) => (
+          <TagPill tag={t} />
+        ))}
+      </div>
+    </div>
+    <section class="posts">
+      {posts.length === 0 ? (
+        <p class="empty-state">No posts with this tag yet.</p>
+      ) : (
+        posts.map((post) => (
+          <PostCard post={post} readingTime={calculateReadingTime(post.body)} />
+        ))
+      )}
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .tag-header {
+    padding: 4rem 0 2rem;
+  }
+
+  .tag-header h1 {
+    margin: 0 0 1.5rem;
+  }
+
+  .all-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .posts {
+    animation: fadeIn 400ms ease-out;
+  }
+
+  .empty-state {
+    color: var(--color-secondary);
+    padding: 2rem 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
