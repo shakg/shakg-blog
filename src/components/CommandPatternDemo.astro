@@ -1,0 +1,622 @@
+---
+// Interactive demo for the Command Pattern blog post
+---
+
+<div class="demo-container">
+  <div class="demo-caption">
+    <span class="demo-label">Try it</span>
+    <span class="demo-hint">Each action is a command on a stack. Press Ctrl/Cmd+Z to undo.</span>
+  </div>
+  
+  <div class="demo-workspace">
+    <div class="document-section">
+      <label for="doc-title" class="doc-label">Document</label>
+      <div class="title-controls">
+        <input 
+          type="text" 
+          id="doc-title" 
+          class="doc-title-input"
+          value="Untitled"
+          readonly
+          aria-label="Document title"
+        />
+        <button id="edit-title-btn" class="action-btn" aria-label="Edit title">
+          Edit
+        </button>
+      </div>
+    </div>
+
+    <div class="items-section">
+      <div class="items-header">
+        <label class="doc-label">Items</label>
+        <button id="add-item-btn" class="action-btn" aria-label="Add item">
+          Add Item
+        </button>
+      </div>
+      <ul id="items-list" class="items-list"></ul>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="undo-btn" class="control-btn" disabled aria-label="Undo">
+      Undo
+    </button>
+    <button id="redo-btn" class="control-btn" disabled aria-label="Redo">
+      Redo
+    </button>
+  </div>
+
+  <div class="stacks-display">
+    <div class="stack">
+      <h4>Undo Stack</h4>
+      <div id="undo-stack" class="stack-content"></div>
+    </div>
+    <div class="stack">
+      <h4>Redo Stack</h4>
+      <div id="redo-stack" class="stack-content"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .demo-container {
+    background: white;
+    border: 1px solid #e7e5e4;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0 3rem;
+    font-family: var(--font-ui);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  }
+
+  .demo-caption {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .demo-label {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.625rem;
+    background: var(--color-surface);
+    color: var(--color-secondary);
+    border-radius: 9999px;
+  }
+
+  .demo-hint {
+    font-size: 0.875rem;
+    color: var(--color-secondary);
+  }
+
+  .demo-workspace {
+    background: var(--color-bg);
+    border: 1px solid #e7e5e4;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .document-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .doc-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .title-controls {
+    display: flex;
+    gap: 0.625rem;
+    align-items: center;
+  }
+
+  .doc-title-input {
+    flex: 1;
+    font-family: var(--font-ui);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #e7e5e4;
+    border-radius: 6px;
+    background: white;
+    color: var(--color-text);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .doc-title-input:focus {
+    outline: none;
+    border-color: #a8a29e;
+    box-shadow: 0 0 0 3px rgba(120, 113, 108, 0.1);
+  }
+
+  .action-btn {
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.625rem 1rem;
+    background: white;
+    color: var(--color-text);
+    border: 1px solid #d6d3d1;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+  }
+
+  .action-btn:hover {
+    background: var(--color-surface);
+    border-color: #a8a29e;
+  }
+
+  .action-btn:active {
+    transform: translateY(1px);
+  }
+
+  .action-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .items-section {
+    border-top: 1px solid #e7e5e4;
+    padding-top: 1.5rem;
+  }
+
+  .items-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  :global(.items-list) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  :global(.item) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: white;
+    border: 1px solid #e7e5e4;
+    border-radius: 6px;
+  }
+
+  :global(.item-text) {
+    flex: 1;
+    font-size: 0.9375rem;
+    color: var(--color-text);
+  }
+
+  :global(.delete-btn) {
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    background: white;
+    color: var(--color-text);
+    border: 1px solid #d6d3d1;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+
+  :global(.delete-btn:hover) {
+    background: var(--color-surface);
+    border-color: #a8a29e;
+  }
+
+  :global(.delete-btn:active) {
+    transform: translateY(1px);
+  }
+
+  :global(.delete-btn:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+  }
+
+  .control-btn {
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    background: var(--color-text);
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 150ms ease;
+    min-width: 100px;
+  }
+
+  .control-btn:hover:not(:disabled) {
+    background: #292524;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .control-btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .control-btn:disabled {
+    background: var(--color-surface);
+    color: #a8a29e;
+    cursor: not-allowed;
+  }
+
+  .control-btn:focus-visible:not(:disabled) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .stacks-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stack h4 {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-secondary);
+    margin: 0 0 0.75rem;
+  }
+
+  .stack-content {
+    background: var(--color-bg);
+    border: 1px solid #e7e5e4;
+    border-radius: 8px;
+    padding: 0.75rem;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.8125rem;
+    font-family: 'SF Mono', Consolas, monospace;
+    line-height: 1.6;
+  }
+
+  :global(.stack-item) {
+    position: relative;
+    padding: 0.5rem 0.625rem 0.5rem 0.875rem;
+    margin-bottom: 0.375rem;
+    background: white;
+    border: 1px solid #e7e5e4;
+    border-left: 3px solid var(--color-secondary);
+    border-radius: 4px;
+    color: var(--color-text);
+  }
+
+  :global(.stack-item:last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.empty-stack) {
+    color: var(--color-secondary);
+    font-style: italic;
+    font-family: var(--font-ui);
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .demo-container {
+      padding: 1.5rem;
+    }
+
+    .demo-caption {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .title-controls {
+      flex-direction: column;
+    }
+
+    .doc-title-input {
+      width: 100%;
+    }
+
+    .action-btn {
+      width: 100%;
+    }
+
+    .stacks-display {
+      grid-template-columns: 1fr;
+    }
+
+    .controls {
+      flex-direction: column;
+    }
+
+    .control-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  // Command interface
+  interface Command {
+    execute(): void;
+    undo(): void;
+    getDescription(): string;
+  }
+
+  // Document state
+  interface DocState {
+    title: string;
+    items: string[];
+  }
+
+  const state: DocState = {
+    title: 'Untitled',
+    items: ['Task 1', 'Task 2']
+  };
+
+  // History manager
+  class History {
+    private undoStack: Command[] = [];
+    private redoStack: Command[] = [];
+
+    run(cmd: Command): void {
+      cmd.execute();
+      this.undoStack.push(cmd);
+      this.redoStack = [];
+      this.updateUI();
+    }
+
+    undo(): void {
+      const cmd = this.undoStack.pop();
+      if (!cmd) return;
+      cmd.undo();
+      this.redoStack.push(cmd);
+      this.updateUI();
+    }
+
+    redo(): void {
+      const cmd = this.redoStack.pop();
+      if (!cmd) return;
+      cmd.execute();
+      this.undoStack.push(cmd);
+      this.updateUI();
+    }
+
+    canUndo(): boolean {
+      return this.undoStack.length > 0;
+    }
+
+    canRedo(): boolean {
+      return this.redoStack.length > 0;
+    }
+
+    getUndoStack(): string[] {
+      return this.undoStack.map(cmd => cmd.getDescription()).reverse();
+    }
+
+    getRedoStack(): string[] {
+      return this.redoStack.map(cmd => cmd.getDescription()).reverse();
+    }
+
+    updateUI(): void {
+      updateControls();
+      updateStacks();
+    }
+  }
+
+  const history = new History();
+
+  // Set Title Command
+  class SetTitleCommand implements Command {
+    private previous: string;
+
+    constructor(
+      private readonly state: DocState,
+      private readonly nextTitle: string
+    ) {
+      this.previous = state.title;
+    }
+
+    execute(): void {
+      this.state.title = this.nextTitle;
+      updateDocument();
+    }
+
+    undo(): void {
+      this.state.title = this.previous;
+      updateDocument();
+    }
+
+    getDescription(): string {
+      return `SetTitle("${this.nextTitle}")`;
+    }
+  }
+
+  // Add Item Command
+  class AddItemCommand implements Command {
+    constructor(
+      private readonly state: DocState,
+      private readonly itemText: string
+    ) {}
+
+    execute(): void {
+      this.state.items.push(this.itemText);
+      updateDocument();
+    }
+
+    undo(): void {
+      this.state.items.pop();
+      updateDocument();
+    }
+
+    getDescription(): string {
+      return `AddItem("${this.itemText}")`;
+    }
+  }
+
+  // Delete Item Command
+  class DeleteItemCommand implements Command {
+    private deletedItem: string = '';
+    private deletedIndex: number = -1;
+
+    constructor(
+      private readonly state: DocState,
+      private readonly index: number
+    ) {}
+
+    execute(): void {
+      this.deletedItem = this.state.items[this.index];
+      this.deletedIndex = this.index;
+      this.state.items.splice(this.index, 1);
+      updateDocument();
+    }
+
+    undo(): void {
+      this.state.items.splice(this.deletedIndex, 0, this.deletedItem);
+      updateDocument();
+    }
+
+    getDescription(): string {
+      return `DeleteItem(${this.deletedIndex})`;
+    }
+  }
+
+  // UI Updates
+  function updateDocument(): void {
+    const titleInput = document.getElementById('doc-title') as HTMLInputElement;
+    if (titleInput) {
+      titleInput.value = state.title;
+    }
+
+    const itemsList = document.getElementById('items-list');
+    if (itemsList) {
+      itemsList.innerHTML = state.items
+        .map((item, index) => `
+          <li class="item">
+            <span class="item-text">${item}</span>
+            <button class="delete-btn" data-index="${index}" aria-label="Delete ${item}">Delete</button>
+          </li>
+        `)
+        .join('');
+
+      // Attach delete handlers
+      itemsList.querySelectorAll('.delete-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          const index = parseInt((e.target as HTMLElement).dataset.index || '0');
+          history.run(new DeleteItemCommand(state, index));
+        });
+      });
+    }
+  }
+
+  function updateControls(): void {
+    const undoBtn = document.getElementById('undo-btn') as HTMLButtonElement;
+    const redoBtn = document.getElementById('redo-btn') as HTMLButtonElement;
+
+    if (undoBtn) {
+      undoBtn.disabled = !history.canUndo();
+    }
+    if (redoBtn) {
+      redoBtn.disabled = !history.canRedo();
+    }
+  }
+
+  function updateStacks(): void {
+    const undoStackEl = document.getElementById('undo-stack');
+    const redoStackEl = document.getElementById('redo-stack');
+
+    if (undoStackEl) {
+      const undoStack = history.getUndoStack();
+      undoStackEl.innerHTML = undoStack.length
+        ? undoStack.map(desc => `<div class="stack-item">${desc}</div>`).join('')
+        : '<div class="empty-stack">Empty</div>';
+    }
+
+    if (redoStackEl) {
+      const redoStack = history.getRedoStack();
+      redoStackEl.innerHTML = redoStack.length
+        ? redoStack.map(desc => `<div class="stack-item">${desc}</div>`).join('')
+        : '<div class="empty-stack">Empty</div>';
+    }
+  }
+
+  // Event handlers
+  function handleEditTitle(): void {
+    const titleInput = document.getElementById('doc-title') as HTMLInputElement;
+    if (!titleInput) return;
+
+    const newTitle = prompt('Enter new title:', state.title);
+    if (newTitle !== null && newTitle.trim() !== '' && newTitle !== state.title) {
+      history.run(new SetTitleCommand(state, newTitle.trim()));
+    }
+  }
+
+  function handleAddItem(): void {
+    const itemText = prompt('Enter new item:');
+    if (itemText !== null && itemText.trim() !== '') {
+      history.run(new AddItemCommand(state, itemText.trim()));
+    }
+  }
+
+  function handleUndo(): void {
+    history.undo();
+  }
+
+  function handleRedo(): void {
+    history.redo();
+  }
+
+  function handleKeyboard(e: KeyboardEvent): void {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const ctrlKey = isMac ? e.metaKey : e.ctrlKey;
+
+    if (ctrlKey && e.key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      handleUndo();
+    } else if (ctrlKey && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+      e.preventDefault();
+      handleRedo();
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    updateDocument();
+    updateControls();
+    updateStacks();
+
+    document.getElementById('edit-title-btn')?.addEventListener('click', handleEditTitle);
+    document.getElementById('add-item-btn')?.addEventListener('click', handleAddItem);
+    document.getElementById('undo-btn')?.addEventListener('click', handleUndo);
+    document.getElementById('redo-btn')?.addEventListener('click', handleRedo);
+    document.addEventListener('keydown', handleKeyboard);
+  });
+</script>
