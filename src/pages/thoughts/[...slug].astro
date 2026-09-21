@@ -1,6 +1,7 @@
 ---
 
 import PostLayout from '../../layouts/PostLayout.astro';
+import CommandPatternDemo from '../../components/CommandPatternDemo.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -24,5 +25,6 @@ const readingTime = calculateReadingTime(post.body);
 ---
 
 <PostLayout post={post} readingTime={readingTime}>
+  {post.slug === 'command-pattern-undo-redo' && <CommandPatternDemo />}
   <Content />
 </PostLayout>
