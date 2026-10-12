@@ -13,7 +13,7 @@ npm run preview  # Preview production build
 ## Structure
 
 - `src/pages/` — Routes (index, about, tags, thoughts/[...slug])
-- `src/components/` — UI components (Header, Footer, PostCard, TagPill)
+- `src/components/` — UI components (Header, Footer, PostList, PostCard, TagPill)
 - `src/layouts/` — Page layouts (BaseLayout, PostLayout)
 - `src/content/thoughts/` — Blog posts (Markdown with frontmatter)
 
@@ -21,6 +21,6 @@ npm run preview  # Preview production build
 
 - Do not commit and push code without asking the user
 - Posts have `draft: true` to exclude from production listings
-- Footer links to Astro and Minimax M2.7 (do not remove)
+- Footer links to Astro (do not remove)
 - Homepage "Back to all posts" links to `/` (not `/thoughts`)
 - Header logo links to `/` and says "Ishak's Thoughts"
