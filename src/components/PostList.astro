@@ -1,0 +1,48 @@
+---
+
+import PostCard from './PostCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'thoughts'>[];
+}
+
+const { posts } = Astro.props;
+
+const byYear = new Map<number, CollectionEntry<'thoughts'>[]>();
+for (const post of posts) {
+  const year = post.data.pubDate.getFullYear();
+  byYear.set(year, [...(byYear.get(year) ?? []), post]);
+}
+---
+
+<div class="post-list">
+  {[...byYear].map(([year, yearPosts]) => (
+    <section class="year-group">
+      <h2 class="year">{year}</h2>
+      <ul>
+        {yearPosts.map((post) => <PostCard post={post} />)}
+      </ul>
+    </section>
+  ))}
+</div>
+
+<style>
+  .year-group + .year-group {
+    margin-top: 3rem;
+  }
+
+  .year {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    letter-spacing: 0;
+    margin: 0 0 0.75rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>
